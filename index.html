@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlsberg Excellence Implementation - Department Presentations</title>
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* RGB versions for opacity control */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  --radius-base: 8px;
+  --radius-lg: 12px;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+
+  /* Carlsberg brand colors */
+  --carlsberg-blue: #003D4C;
+  --carlsberg-gold: #C19A6B;
+  --carlsberg-green: #00563B;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(167, 169, 169, 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-border: rgba(119, 124, 124, 0.3);
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-base);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--carlsberg-blue) 0%, var(--carlsberg-green) 100%);
+    color: white;
+    padding: var(--space-24) var(--space-32);
+    box-shadow: var(--shadow-lg);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-8);
+}
+
+.header-subtitle {
+    font-size: var(--font-size-base);
+    opacity: 0.9;
+}
+
+.department-selector {
+    margin-top: var(--space-20);
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+}
+
+.department-selector label {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-base);
+}
+
+.department-selector select {
+    padding: var(--space-8) var(--space-16);
+    font-size: var(--font-size-base);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-base);
+    background-color: rgba(255, 255, 255, 0.95);
+    color: var(--carlsberg-blue);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: var(--space-32);
+}
+
+.slide-container {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-32);
+    min-height: 600px;
+    border: 1px solid var(--color-card-border);
+}
+
+.slide {
+    display: none;
+}
+
+.slide.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--carlsberg-blue);
+    margin-bottom: var(--space-16);
+    border-bottom: 3px solid var(--carlsberg-gold);
+    padding-bottom: var(--space-12);
+}
+
+.slide-subtitle {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-24);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-16);
+    margin: var(--space-24) 0;
+}
+
+.metric-card {
+    background: var(--color-bg-1);
+    padding: var(--space-20);
+    border-radius: var(--radius-base);
+    border: 1px solid var(--color-border);
+}
+
+.metric-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-value {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--carlsberg-blue);
+    margin-top: var(--space-8);
+}
+
+.content-section {
+    margin: var(--space-24) 0;
+}
+
+.section-heading {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--carlsberg-blue);
+    margin-bottom: var(--space-12);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
+
+.list-items {
+    list-style: none;
+    padding: 0;
+}
+
+.list-items li {
+    padding: var(--space-12) var(--space-16);
+    margin-bottom: var(--space-8);
+    background: var(--color-bg-2);
+    border-radius: var(--radius-base);
+    border-left: 4px solid var(--carlsberg-gold);
+    font-size: var(--font-size-base);
+}
+
+.list-items.strengths li {
+    background: var(--color-bg-3);
+    border-left-color: var(--carlsberg-green);
+}
+
+.list-items.gaps li {
+    background: var(--color-bg-4);
+    border-left-color: var(--color-red-500);
+}
+
+.slide-image {
+    margin: var(--space-24) 0;
+    text-align: center;
+}
+
+.slide-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+}
+
+.slide-image figcaption {
+    margin-top: var(--space-12);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+.highlight-box {
+    background: linear-gradient(135deg, var(--color-bg-1) 0%, var(--color-bg-2) 100%);
+    padding: var(--space-20);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--carlsberg-gold);
+    margin: var(--space-24) 0;
+}
+
+.highlight-box h3 {
+    color: var(--carlsberg-blue);
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-12);
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-32);
+    padding-top: var(--space-24);
+    border-top: 2px solid var(--color-border);
+}
+
+.nav-button {
+    padding: var(--space-12) var(--space-24);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    border: none;
+    border-radius: var(--radius-base);
+    background: var(--carlsberg-blue);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    background: var(--carlsberg-green);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.nav-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.slide-counter {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+}
+
+.timeline-visual {
+    margin: var(--space-24) 0;
+    padding: var(--space-20);
+    background: var(--color-bg-1);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+}
+
+.timeline-quarters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-16);
+}
+
+.quarter {
+    text-align: center;
+    padding: var(--space-16);
+    background: white;
+    border-radius: var(--radius-base);
+    border: 2px solid var(--carlsberg-gold);
+}
+
+.quarter-label {
+    font-weight: var(--font-weight-bold);
+    color: var(--carlsberg-blue);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-8);
+}
+
+.quarter-phase {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-16);
+    margin: var(--space-24) 0;
+}
+
+.impact-item {
+    background: var(--color-surface);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    border: 2px solid var(--color-border);
+    text-align: center;
+}
+
+.impact-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+}
+
+.impact-value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--carlsberg-green);
+}
+
+@media print {
+    .header, .navigation {
+        display: none;
+    }
+    
+    .slide-container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    body {
+        background: white;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: var(--space-16);
+    }
+    
+    .slide-title {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .metrics-grid, .timeline-quarters, .impact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>Carlsberg Excellence Implementation</h1>
+                <p class="header-subtitle">Department Roadmap Presentations | 12-Month Transformation Journey</p>
+                
+                <div class="department-selector">
+                    <label for="departmentSelect">Select Department:</label>
+                    <select id="departmentSelect">
+                        <option value="0">Packaging</option>
+                        <option value="1">Syrup Room</option>
+                        <option value="2">Maintenance</option>
+                        <option value="3">Quality</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="slide-container" id="slideContainer">
+                <!-- Slides will be dynamically inserted here -->
+            </div>
+
+            <div class="navigation">
+                <button class="nav-button" id="prevButton">← Previous</button>
+                <div class="slide-counter" id="slideCounter">Slide 1 of 10</div>
+                <button class="nav-button" id="nextButton">Next →</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Department data structure
+        const departments = [
+            {
+                name: "Packaging",
+                slides: [
+                    {
+                        type: "title",
+                        title: "PACKAGING DEPARTMENT",
+                        subtitle: "Carlsberg Excellence Roadmap",
+                        baseline: "13.3%",
+                        target: "36.7%",
+                        gap: "+0.93 points",
+                        tagline: "12-Month Implementation Plan"
+                    },
+                    {
+                        type: "assessment",
+                        title: "Current State Assessment",
+                        strengths: [
+                            "Line 4 digital OEE tracking operational",
+                            "PMS meetings functioning at L2, L3, L4 levels",
+                            "M1/M3 abnormality system in place",
+                            "Basic TPM improvements ongoing",
+                            "Some visual standards present"
+                        ],
+                        gaps: [
+                            "No 9-Grid cascade to department",
+                            "No workflow standardization/mapping",
+                            "No formal loss tree or focused improvement",
+                            "No Gemba Kaizen process",
+                            "No Gemba Walk program"
+                        ]
+                    },
+                    {
+                        type: "radar",
+                        title: "Packaging: Kylemore vs Kastzalan 2025 Target",
+                        subtitle: "Kastzalan 2025 Target: 77% maturity | Kylemore 2026 Target: 37% maturity",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/03425078328153fb33a3dccb9d8029ce/4217ca7c-36b4-489f-b170-4d327c64648d/5c3699c9.png",
+                        kylemoreAvg: "0.53",
+                        kastzalanAvg: "0.77",
+                        narrative: "This radar shows Kylemore current state vs Kastzalan's proven 2025 targets. Kastzalan achieved 77% maturity in 2025, demonstrating what's possible. Our 2026 targets (37%) represent aggressive 12-month transformation. By following this roadmap, we position ourselves to reach Kastzalan levels within 18-24 months."
+                    },
+                    {
+                        type: "targets",
+                        title: "2026 Targets & Business Impact",
+                        target_maturity: "36.7% (1.47 score)",
+                        impacts: [
+                            { label: "Line 4 OEE Improvement", value: "+6%" },
+                            { label: "Cost Savings", value: "Through Loss Elimination" },
+                            { label: "Quality Impact", value: "Reliability Improvement" }
+                        ],
+                        strategy: "Direct support for site priorities and cost reduction"
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q1 2026: Quick Wins (Months 1-3)",
+                        actions: [
+                            "Cascade 9-Grid and create Packaging TIP",
+                            "Map critical workflows (changeovers, start-ups, CIPs)",
+                            "Establish Line 4 as 5S pilot - achieve Level 2",
+                            "Build loss cost tree for Line 4 (OEE losses)"
+                        ],
+                        image: "https://user-gen-media-assets.s3.amazonaws.com/seedream_images/0bcc29fd-4166-41c4-a229-33c1e4fc551a.png",
+                        imageCaption: "Kastzalan-style packaging excellence: organized line with digital controls"
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q2 2026: Development Phase (Months 4-6)",
+                        actions: [
+                            "Launch Gemba Kaizen program with recognition",
+                            "Expand 5S to all packaging lines",
+                            "Deploy visual management standards (OEE, quality, safety)",
+                            "Standardize Line 4 workflows and create visual SOPs"
+                        ],
+                        image: "https://user-gen-media-assets.s3.amazonaws.com/seedream_images/52121045-8578-42d6-b212-6cc062fd4e55.png",
+                        imageCaption: "Kastzalan visual management: real-time OEE and KPI boards"
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q3 2026: Securing Performance (Months 7-9)",
+                        actions: [
+                            "Deploy workflow standards across all packaging lines",
+                            "Implement Loss Eradication Playbooks",
+                            "Achieve 5S Level 2 on all lines",
+                            "Expand Gemba Kaizen to target 1 per employee per quarter"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q4 2026: Continuous Improvement (Months 10-12)",
+                        actions: [
+                            "Establish regular Gemba Walks with coaching",
+                            "Achieve target maturity: 36.7%",
+                            "Operators driving autonomous 5S improvements",
+                            "Kaizen rate exceeding 1 per employee per quarter"
+                        ]
+                    },
+                    {
+                        type: "success",
+                        title: "Success Factors & Expected Results",
+                        factors: [
+                            "Leadership commitment: Daily Gemba presence",
+                            "Structured methodology: Pilot then expand",
+                            "Employee engagement: Make it everyone's job",
+                            "Digital enablement: Zaptic, visual boards",
+                            "Continuous learning: Learn from each phase"
+                        ],
+                        results: "36.7% maturity, +6% OEE improvement, cost savings delivered"
+                    },
+                    {
+                        type: "metrics",
+                        title: "Key Metrics & Tracking",
+                        metrics: [
+                            { label: "Maturity Score", value: "Bi-annual assessment" },
+                            { label: "OEE Improvement", value: "Target +6%" },
+                            { label: "Kaizen Rate", value: "1+ per employee/quarter" },
+                            { label: "5S Audit Score", value: "80%+ average" }
+                        ],
+                        kpi: "Line 4 OEE +6%, Cost savings aligned with FoJ targets"
+                    },
+                    {
+                        type: "timeline",
+                        title: "Implementation Timeline",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/ac97e58c-17c8-4a24-a9aa-9b732d370915/d51f70ad.png"
+                    },
+                    {
+                        type: "comparison",
+                        title: "2026 Transformation Vision",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/eb82b519-39ee-476d-9971-a4767c857428/2c5673b4.png"
+                    },
+                    {
+                        type: "kastzalan",
+                        title: "Kastzalan Pathway: From 2026 Targets to Excellence",
+                        content: [
+                            "<strong>Kastzalan 2025 Performance:</strong> 77% maturity achieved",
+                            "<strong>Kylemore 2026 Target:</strong> 37% maturity (aggressive start)",
+                            "<strong>Path Forward:</strong> Following this roadmap, we project 60%+ maturity by late 2027",
+                            "",
+                            "<strong>Key milestone:</strong> Our 12-month plan establishes foundation for sustained excellence",
+                            "<strong>Timeline to Kastzalan levels:</strong> 18-24 months with continued focus",
+                            "<strong>Beyond 2026:</strong> Build on momentum toward network-leading performance"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Syrup Room",
+                slides: [
+                    {
+                        type: "title",
+                        title: "SYRUP ROOM DEPARTMENT",
+                        subtitle: "Carlsberg Excellence Roadmap",
+                        baseline: "3.3%",
+                        target: "30.0%",
+                        gap: "+1.07 points",
+                        tagline: "GREATEST OPPORTUNITY on site",
+                        highlight: true
+                    },
+                    {
+                        type: "assessment",
+                        title: "Current State: Starting from Foundation",
+                        strengths: [
+                            "Basic SOPs present for key processes",
+                            "Visual safety and quality displays",
+                            "Training matrices exist",
+                            "Root Cause Analysis culture present"
+                        ],
+                        gaps: [
+                            "No workplace standardization",
+                            "No priority zones identified",
+                            "No PMS at department level",
+                            "No 9-Grid cascade",
+                            "No M1/M3 abnormality system",
+                            "No Gemba activities"
+                        ],
+                        note: "Largest improvement opportunity on entire site"
+                    },
+                    {
+                        type: "radar",
+                        title: "Syrup Room: Kylemore vs Kastzalan 2025 Target",
+                        subtitle: "Kastzalan 2025 Target: 75% maturity | Greatest opportunity",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/03425078328153fb33a3dccb9d8029ce/e055bdf7-d5be-4910-8073-52c8549912af/2c5673b4.png",
+                        kylemoreAvg: "0.13",
+                        kastzalanAvg: "0.75",
+                        narrative: "Kastzalan's 75% maturity shows what's achievable. Our focused 12-month roadmap targets 30% as foundation, with pathway to Kastzalan levels within 18 months."
+                    },
+                    {
+                        type: "impact",
+                        title: "Why Syrup Room Matters",
+                        impacts: [
+                            "Critical for packaging line performance (water loss, syrup loss, OEE)",
+                            "Direct impact on cost of goods sold",
+                            "Quality and food safety critical (HACCP requirements)",
+                            "Employee capability development opportunity",
+                            "Foundation for site continuous improvement culture"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q1 2026: Foundation Building (Months 1-3)",
+                        actions: [
+                            "Define priority zones (Open Vessels, Pasteuriser, HACCP areas) with ownership",
+                            "Implement 5S in priority zones (Sort & Set in Order)",
+                            "Map critical workflows (batching, EWM, syrup testing)",
+                            "Establish Syrup Room PMS L3 meetings",
+                            "Train team on M1/M3 abnormality reporting basics"
+                        ],
+                        image: "https://user-gen-media-assets.s3.amazonaws.com/seedream_images/99767faa-c561-4bf6-a6ad-fb00e10ff27f.png",
+                        imageCaption: "Kastzalan syrup room excellence: organized vessels with clear compliance standards"
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q2 2026: System Deployment (Months 4-6)",
+                        actions: [
+                            "Deploy M1/M3 abnormality system (CRITICAL first step)",
+                            "Create loss tree (water loss, syrup loss, OEE impact)",
+                            "Expand 5S to all areas (Shine & Standardize phases)",
+                            "Deploy visual standards for CCP compliance",
+                            "Launch operator-led problem-solving capability"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q3 2026: Standardization & Improvement (Months 7-9)",
+                        actions: [
+                            "Standardize all workflows integrated with SOPs",
+                            "Launch systematic problem-solving for chronic losses",
+                            "Achieve 5S Level 2 across all zones",
+                            "Deploy focused improvement on water/syrup loss reduction",
+                            "Integrate Syrup Room PMS with Packaging PMS"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q4 2026: Embedding Culture (Months 10-12)",
+                        actions: [
+                            "Establish Gemba Walks and Kaizen culture",
+                            "Achieve target maturity: 30.0%",
+                            "Problem-solving embedded at operator level",
+                            "Water/syrup loss reduction targets achieved",
+                            "Recognized as best-practice by other departments"
+                        ]
+                    },
+                    {
+                        type: "business",
+                        title: "Expected Business Impact",
+                        impacts: [
+                            { label: "Water Loss Reduction", value: "15-20%" },
+                            { label: "Syrup Loss Reduction", value: "10-15%" },
+                            { label: "OEE Impact", value: "+2-3%" },
+                            { label: "Cost Savings", value: "Loss Elimination" },
+                            { label: "Quality", value: "Improved RFT" }
+                        ]
+                    },
+                    {
+                        type: "timeline",
+                        title: "Implementation Timeline",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/ac97e58c-17c8-4a24-a9aa-9b732d370915/d51f70ad.png"
+                    },
+                    {
+                        type: "comparison",
+                        title: "2026 Transformation Vision",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/eb82b519-39ee-476d-9971-a4767c857428/2c5673b4.png"
+                    },
+                    {
+                        type: "vision",
+                        title: "30% Maturity Vision by Dec 2026",
+                        vision: [
+                            "All priority zones standardized with 5S Level 2",
+                            "M1/M3 system preventing recurring issues",
+                            "Problem-solving culture preventing chronic losses",
+                            "Operators driving continuous improvements autonomously",
+                            "Syrup Room recognized as site excellence showcase"
+                        ],
+                        summary: "Transformation from firefighting to proactive management"
+                    },
+                    {
+                        type: "kastzalan",
+                        title: "Syrup Room: Greatest Transformation Opportunity",
+                        content: [
+                            "<strong>Kastzalan 2025 Performance:</strong> 75% maturity - proven achievable",
+                            "<strong>Kylemore 2026 Target:</strong> 30% maturity - critical foundation year",
+                            "<strong>Gap Analysis:</strong> 45-point opportunity exists within 18 months",
+                            "",
+                            "<strong>Our roadmap is structured to close this gap systematically:</strong>",
+                            "Q1-Q2 2026: Foundation (reaching 15-20%)",
+                            "Q3-Q4 2026: Acceleration (reaching 30% target)",
+                            "2027: Continued momentum toward 60%+",
+                            "",
+                            "<strong>Syrup Room can become site showcase by Q2 2027</strong>"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Maintenance",
+                slides: [
+                    {
+                        type: "title",
+                        title: "MAINTENANCE DEPARTMENT",
+                        subtitle: "Carlsberg Excellence Roadmap",
+                        baseline: "10.0%",
+                        target: "36.7%",
+                        gap: "+1.07 points",
+                        tagline: "Building Systematic Excellence"
+                    },
+                    {
+                        type: "assessment",
+                        title: "Current State Assessment",
+                        strengths: [
+                            "Workshop 5S action plan initiated",
+                            "M1/M3 system functional for work order management",
+                            "PMS meetings at L2, L3 levels operational",
+                            "Breakdown Analysis (BDA) capability established",
+                            "Basic skill matrices in place",
+                            "TPM improvements ongoing"
+                        ],
+                        gaps: [
+                            "No priority zone mapping",
+                            "No workflow standardization",
+                            "No visual management boards",
+                            "No 9-Grid deployment",
+                            "No focused improvement/loss tree",
+                            "No Gemba Kaizen or Gemba Walk programs"
+                        ]
+                    },
+                    {
+                        type: "radar",
+                        title: "Maintenance: Kylemore vs Kastzalan 2025 Target",
+                        subtitle: "Kastzalan 2025 Target: 75% maturity | Achievable benchmark",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/03425078328153fb33a3dccb9d8029ce/1f38deac-50b9-439a-a402-b621a2782ef6/4250ffdb.png",
+                        kylemoreAvg: "0.40",
+                        kastzalanAvg: "0.75",
+                        narrative: "Kastzalan demonstrates 75% achievable. Our 2026 target of 37% exceeds first-year benchmark, showing confidence in team capability and methodology."
+                    },
+                    {
+                        type: "impact",
+                        title: "Maintenance Excellence Vision",
+                        impacts: [
+                            "Optimize maintenance cost and Mean Time To Repair (MTTR)",
+                            "Prevent recurring breakdowns through predictive maintenance",
+                            "Support production targets through reliability excellence",
+                            "Develop maintenance team capability and problem-solving",
+                            "Link maintenance excellence to production performance"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q1 2026: Foundation Phase (Months 1-3)",
+                        actions: [
+                            "Complete workshop 5S to Level 2",
+                            "Map maintenance workflows (WO management, PM scheduling, breakdown response)",
+                            "Cascade 9-Grid and create Maintenance TIP",
+                            "Build maintenance cost loss tree (breakdown costs, MTTR, spare parts)",
+                            "Define visual management board requirements"
+                        ],
+                        image: "https://user-gen-media-assets.s3.amazonaws.com/seedream_images/084184d7-eeb3-4a7e-8aaa-c998af21e5e2.png",
+                        imageCaption: "Kastzalan maintenance excellence: organized workshop with visual controls"
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q2 2026: Capability Building (Months 4-6)",
+                        actions: [
+                            "Implement visual management (MTTR, MTBF, WO backlog, critical spares)",
+                            "Standardize PM and breakdown workflows",
+                            "Deploy 5S broadly across all maintenance areas",
+                            "Integrate BDA tracker with PMS L3 meetings",
+                            "Begin predictive maintenance pilot on high-impact equipment"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q3 2026: Improvement Acceleration (Months 7-9)",
+                        actions: [
+                            "Launch Gemba Kaizen for maintenance improvements",
+                            "Expand 5S achieving Level 2 across all areas",
+                            "Deploy Loss Eradication Playbooks for cost reduction",
+                            "Implement preventive maintenance standards from tag analysis",
+                            "Establish cross-functional Gemba Walks with Operations"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q4 2026: Embedding Excellence (Months 10-12)",
+                        actions: [
+                            "Establish regular Gemba Walks with coaching approach",
+                            "Achieve target maturity: 36.7%",
+                            "Maintenance cost reduction targets delivered",
+                            "Preventive maintenance standards preventing recurring issues",
+                            "Cross-functional problem-solving teams operational"
+                        ]
+                    },
+                    {
+                        type: "metrics",
+                        title: "Key Success Metrics",
+                        metrics: [
+                            { label: "MTTR Improvement", value: "-15%" },
+                            { label: "MTBF Improvement", value: "+20%" },
+                            { label: "Cost Reduction", value: "-10-15%" },
+                            { label: "Kaizen Rate", value: "1/employee/quarter" },
+                            { label: "5S Audit", value: "80%+ average" }
+                        ]
+                    },
+                    {
+                        type: "timeline",
+                        title: "Implementation Timeline",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/ac97e58c-17c8-4a24-a9aa-9b732d370915/d51f70ad.png"
+                    },
+                    {
+                        type: "comparison",
+                        title: "2026 Transformation Vision",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/eb82b519-39ee-476d-9971-a4767c857428/2c5673b4.png"
+                    },
+                    {
+                        type: "vision",
+                        title: "Maintenance Team Development Path",
+                        vision: [
+                            "From reactive firefighting → Proactive preventive maintenance",
+                            "From isolated work → Cross-functional collaboration",
+                            "From cost center → Strategic asset care",
+                            "From task execution → Problem-solving capability",
+                            "From individual performers → Continuous improvement culture"
+                        ],
+                        summary: "Building excellence through systematic capability development"
+                    },
+                    {
+                        type: "kastzalan",
+                        title: "Maintenance: Systematic Excellence",
+                        content: [
+                            "<strong>Kastzalan 2025 Performance:</strong> 75% maturity established",
+                            "<strong>Kylemore 2026 Target:</strong> 37% maturity (exceeds first-year benchmark)",
+                            "<strong>Strategic Advantage:</strong> We're learning from Kastzalan's journey",
+                            "",
+                            "<strong>Our 12-month roadmap compresses multi-year learning:</strong>",
+                            "Applied best practices = accelerated progress",
+                            "Realistic targets = sustainable change",
+                            "Pathway: 2026 targets → match Kastzalan 2025 by Q1 2027 → exceed by EOY 2027"
+                        ]
+                    }
+                ]
+            },
+            {
+                name: "Quality",
+                slides: [
+                    {
+                        type: "title",
+                        title: "QUALITY DEPARTMENT",
+                        subtitle: "Carlsberg Excellence Roadmap",
+                        baseline: "15.0%",
+                        target: "43.3%",
+                        gap: "+1.13 points",
+                        tagline: "HIGHEST maturity target - Leading site excellence",
+                        highlight: true
+                    },
+                    {
+                        type: "assessment",
+                        title: "Quality's Unique Strengths",
+                        strengths: [
+                            "Mature NCR/abnormality system (Level 2) - strongest on site",
+                            "Workflow standardization present for key processes",
+                            "Functional PMS meetings with quality KPIs",
+                            "Problem-solving capability and RCA culture established",
+                            "Skill matrices and training in place",
+                            "Organizational setup assessed against benchmarks"
+                        ],
+                        note: "Positioned to lead site Carlsberg Excellence implementation"
+                    },
+                    {
+                        type: "radar",
+                        title: "Quality: Kylemore vs Kastzalan 2025 Target",
+                        subtitle: "Kastzalan 2025 Target: 67% maturity | Leading position",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/03425078328153fb33a3dccb9d8029ce/9c437752-3f59-432d-96f2-59fd124c941e/2c5673b4.png",
+                        kylemoreAvg: "0.60",
+                        kastzalanAvg: "0.67",
+                        narrative: "Quality leads with 15% baseline (highest on site). Kastzalan 2025 target: 67%. Our 2026 target: 43% - exceeding Kastzalan first-year, positioning Quality to lead network.",
+                        note: "Quality has lowest Kastzalan target but highest Kylemore baseline"
+                    },
+                    {
+                        type: "impact",
+                        title: "Quality's Leadership Role",
+                        impacts: [
+                            "NCR system as model for other departments to replicate",
+                            "Quality KPIs (RFT, CCPs) at heart of site priorities",
+                            "Lab/Micro/Sensory as precision environment for 5S excellence",
+                            "Quality insights driving focused improvement across site",
+                            "Quality leading site Gemba Kaizen culture"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q1 2026: Foundation Excellence (Months 1-3)",
+                        actions: [
+                            "Map priority areas (Lab, Micro, Sensory, Retain Stores) with zone owners",
+                            "Implement 5S in Lab and Micro as pilots achieving Level 2",
+                            "Cascade 9-Grid with quality KPIs (RFT, CCP compliance, micro failures)",
+                            "Build quality loss tree (customer complaints, rework, quarantine costs)",
+                            "Enhance NCR system integration with PMS meetings"
+                        ],
+                        image: "https://user-gen-media-assets.s3.amazonaws.com/seedream_images/646a039d-5ef7-42ab-8446-1e382271340b.png",
+                        imageCaption: "Kastzalan quality lab excellence: organized testing with visual compliance"
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q2 2026: Expansion Phase (Months 4-6)",
+                        actions: [
+                            "Deploy visual standards in Lab/Micro (CCP verification, test backlogs)",
+                            "Create Quality TIP linked to site priorities and RFT targets",
+                            "Expand 5S to Sensory and Retain Stores",
+                            "Standardize quality workflows (sampling, testing, hold/release)",
+                            "Launch cross-functional problem-solving for chronic issues"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q3 2026: Improvement Acceleration (Months 7-9)",
+                        actions: [
+                            "Launch Gemba Kaizen for quality improvements (CCP efficiency, test cycle time)",
+                            "Expand NCR integration with all departmental PMS meetings",
+                            "Achieve 5S Level 2 in all quality areas",
+                            "Deploy focused improvement on RFT and customer complaint reduction",
+                            "Begin quarterly quality system audits using CarlEx standards"
+                        ]
+                    },
+                    {
+                        type: "quarter",
+                        title: "Q4 2026: Leading Site Excellence (Months 10-12)",
+                        actions: [
+                            "Establish Gemba Walks with all departments",
+                            "Achieve target maturity: 43.3% (highest on site)",
+                            "Quality recognized as excellence showcase",
+                            "RFT improvement targets delivered",
+                            "Best practices documented for Carlsberg network"
+                        ]
+                    },
+                    {
+                        type: "business",
+                        title: "Quality's Business Impact",
+                        impacts: [
+                            { label: "RFT Improvement", value: "+10-15%" },
+                            { label: "Complaint Reduction", value: "-30%" },
+                            { label: "Cost Savings", value: "-20% rework" },
+                            { label: "CCP Compliance", value: "99.5%+" },
+                            { label: "Lab Efficiency", value: "-15% cycle time" }
+                        ]
+                    },
+                    {
+                        type: "timeline",
+                        title: "Implementation Timeline",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/ac97e58c-17c8-4a24-a9aa-9b732d370915/d51f70ad.png"
+                    },
+                    {
+                        type: "comparison",
+                        title: "2026 Transformation Vision",
+                        chartImage: "https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/aa7ace927887fb9ac812f91d4965efa6/eb82b519-39ee-476d-9971-a4767c857428/2c5673b4.png"
+                    },
+                    {
+                        type: "vision",
+                        title: "43.3% Maturity Vision by Dec 2026",
+                        vision: [
+                            "All quality areas achieving 5S Level 2 with self-driven improvements",
+                            "NCR system fully integrated enabling data-driven decisions",
+                            "RFT and CCP targets achieved consistently",
+                            "Quality team functioning as coaches and leaders",
+                            "Quality department recognized as Carlsberg best-practice within network"
+                        ],
+                        summary: "Leading organizational excellence and continuous improvement culture"
+                    },
+                    {
+                        type: "kastzalan",
+                        title: "Quality: Leading Network Excellence",
+                        content: [
+                            "<strong>Kastzalan 2025 Performance:</strong> 67% maturity target",
+                            "<strong>Kylemore 2026 Target:</strong> 43% maturity (exceeds Kastzalan first-year)",
+                            "<strong>Competitive Position:</strong> Quality department leads site transformation",
+                            "",
+                            "<strong>Quality's advantage:</strong>",
+                            "• Highest baseline (15% vs 3-10% others)",
+                            "• Mature NCR system provides foundation",
+                            "• Can exceed Kastzalan 2025 by EOY 2026",
+                            "",
+                            "<strong>Vision: Quality department as Carlsberg network model by late 2027</strong>"
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Application state
+        let currentDepartment = 0;
+        let currentSlide = 0;
+
+        // DOM elements
+        const slideContainer = document.getElementById('slideContainer');
+        const departmentSelect = document.getElementById('departmentSelect');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const slideCounter = document.getElementById('slideCounter');
+
+        // Event listeners
+        departmentSelect.addEventListener('change', (e) => {
+            currentDepartment = parseInt(e.target.value);
+            currentSlide = 0;
+            renderSlides();
+            updateNavigation();
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+                updateNavigation();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            const totalSlides = departments[currentDepartment].slides.length;
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+                updateNavigation();
+            }
+        });
+
+        // Render slides for current department
+        function renderSlides() {
+            const dept = departments[currentDepartment];
+            slideContainer.innerHTML = '';
+
+            dept.slides.forEach((slideData, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide';
+                slideDiv.id = `slide-${index}`;
+                
+                let slideHTML = '';
+
+                // Generate slide content based on type
+                switch(slideData.type) {
+                    case 'title':
+                        slideHTML = renderTitleSlide(slideData);
+                        break;
+                    case 'assessment':
+                        slideHTML = renderAssessmentSlide(slideData);
+                        break;
+                    case 'targets':
+                        slideHTML = renderTargetsSlide(slideData);
+                        break;
+                    case 'quarter':
+                        slideHTML = renderQuarterSlide(slideData);
+                        break;
+                    case 'timeline':
+                        slideHTML = renderTimelineSlide(slideData);
+                        break;
+                    case 'radar':
+                        slideHTML = renderRadarSlide(slideData);
+                        break;
+                    case 'comparison':
+                        slideHTML = renderComparisonSlide(slideData);
+                        break;
+                    case 'success':
+                        slideHTML = renderSuccessSlide(slideData);
+                        break;
+                    case 'metrics':
+                        slideHTML = renderMetricsSlide(slideData);
+                        break;
+                    case 'impact':
+                        slideHTML = renderImpactSlide(slideData);
+                        break;
+                    case 'business':
+                        slideHTML = renderBusinessSlide(slideData);
+                        break;
+                    case 'vision':
+                        slideHTML = renderVisionSlide(slideData);
+                        break;
+                    case 'digital':
+                        slideHTML = renderDigitalSlide(slideData);
+                        break;
+                    case 'kaizen':
+                        slideHTML = renderKaizenSlide(slideData);
+                        break;
+                    case 'kastzalan':
+                        slideHTML = renderKastzalanSlide(slideData);
+                        break;
+                }
+
+                slideDiv.innerHTML = slideHTML;
+                slideContainer.appendChild(slideDiv);
+            });
+
+            showSlide(currentSlide);
+        }
+
+        function renderTitleSlide(data) {
+            const highlightClass = data.highlight ? 'highlight-box' : '';
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <h2 class="slide-subtitle">${data.subtitle}</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Baseline Maturity</div>
+                        <div class="metric-value">${data.baseline}</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Target Maturity</div>
+                        <div class="metric-value">${data.target}</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Improvement Gap</div>
+                        <div class="metric-value">${data.gap}</div>
+                    </div>
+                </div>
+                <div class="${highlightClass}" style="margin-top: 2rem;">
+                    <h3>${data.tagline}</h3>
+                </div>
+            `;
+        }
+
+        function renderAssessmentSlide(data) {
+            const strengthsList = data.strengths.map(s => `<li>${s}</li>`).join('');
+            const gapsList = data.gaps ? data.gaps.map(g => `<li>${g}</li>`).join('') : '';
+            const noteHTML = data.note ? `<div class="highlight-box"><p><strong>Note:</strong> ${data.note}</p></div>` : '';
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <h3 class="section-heading">✓ Strengths</h3>
+                    <ul class="list-items strengths">${strengthsList}</ul>
+                </div>
+                ${data.gaps ? `
+                <div class="content-section">
+                    <h3 class="section-heading">⚠ Gaps to Address</h3>
+                    <ul class="list-items gaps">${gapsList}</ul>
+                </div>
+                ` : ''}
+                ${noteHTML}
+            `;
+        }
+
+        function renderTargetsSlide(data) {
+            const impactCards = data.impacts.map(imp => `
+                <div class="impact-item">
+                    <div class="impact-label">${imp.label}</div>
+                    <div class="impact-value">${imp.value}</div>
+                </div>
+            `).join('');
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="highlight-box">
+                    <h3>Target Maturity: ${data.target_maturity}</h3>
+                </div>
+                <div class="content-section">
+                    <h3 class="section-heading">Business Impact</h3>
+                    <div class="impact-grid">${impactCards}</div>
+                </div>
+                <div class="highlight-box">
+                    <p><strong>Strategic Link:</strong> ${data.strategy}</p>
+                </div>
+            `;
+        }
+
+        function renderQuarterSlide(data) {
+            const actionsList = data.actions.map(a => `<li>${a}</li>`).join('');
+            const imageHTML = data.image ? `
+                <figure class="slide-image">
+                    <img src="${data.image}" alt="${data.imageCaption || 'Best practice image'}">
+                    <figcaption>${data.imageCaption || ''}</figcaption>
+                </figure>
+            ` : '';
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <h3 class="section-heading">Key Actions</h3>
+                    <ul class="list-items">${actionsList}</ul>
+                </div>
+                ${imageHTML}
+            `;
+        }
+
+        function renderTimelineSlide(data) {
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <figure class="slide-image">
+                    <img src="${data.chartImage}" alt="12-Month Implementation Timeline 2026">
+                    <figcaption>12-month phased implementation timeline for 2026</figcaption>
+                </figure>
+                <div class="highlight-box" style="margin-top: 2rem;">
+                    <h3>Phased Approach</h3>
+                    <p>Q1: Quick Wins | Q2: Development | Q3: Securing | Q4: Continuous Improvement</p>
+                </div>
+            `;
+        }
+
+        function renderRadarSlide(data) {
+            const subtitleHTML = data.subtitle ? `<h2 class="slide-subtitle">${data.subtitle}</h2>` : '';
+            const noteHTML = data.note ? `<div class="highlight-box" style="margin-top: 1rem; background: var(--color-bg-2);"><p><strong>Note:</strong> ${data.note}</p></div>` : '';
+            const narrativeHTML = data.narrative ? `
+                <div class="highlight-box" style="margin-top: 2rem;">
+                    <h3>Kastzalan 2025 Benchmark Context</h3>
+                    <p>${data.narrative}</p>
+                </div>
+            ` : `
+                <div class="highlight-box" style="margin-top: 2rem;">
+                    <h3>Performance Gap Analysis</h3>
+                    <p>Radar chart shows the transformation opportunity across all 15 Carlsberg Excellence check items, comparing Kylemore's current maturity against Kastzalan's proven 2025 targets.</p>
+                </div>
+            `;
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                ${subtitleHTML}
+                ${noteHTML}
+                <figure class="slide-image">
+                    <img src="${data.chartImage}" alt="Radar comparison chart">
+                    <figcaption>Kylemore current state (avg: ${data.kylemoreAvg}) vs Kastzalan 2025 target (avg: ${data.kastzalanAvg})</figcaption>
+                </figure>
+                ${narrativeHTML}
+            `;
+        }
+
+        function renderComparisonSlide(data) {
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <figure class="slide-image">
+                    <img src="${data.chartImage}" alt="2025 vs 2026 Comparison">
+                    <figcaption>Baseline October 2025 vs Target December 2026 across all priority departments</figcaption>
+                </figure>
+                <div class="highlight-box" style="margin-top: 2rem;">
+                    <h3>Site Transformation Journey</h3>
+                    <p>Overall site maturity progression from 10% (Oct 2025) to 25.4% (Dec 2026) - representing significant improvement across all departments with Packaging, Maintenance, and Quality targeting 36.7-43.3% maturity levels.</p>
+                </div>
+            `;
+        }
+
+        function renderSuccessSlide(data) {
+            const factorsList = data.factors.map(f => `<li>${f}</li>`).join('');
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <h3 class="section-heading">Critical Success Factors</h3>
+                    <ul class="list-items">${factorsList}</ul>
+                </div>
+                <div class="highlight-box">
+                    <h3>Expected Results</h3>
+                    <p>${data.results}</p>
+                </div>
+            `;
+        }
+
+        function renderMetricsSlide(data) {
+            const metricCards = data.metrics.map(m => `
+                <div class="metric-card">
+                    <div class="metric-label">${m.label}</div>
+                    <div class="metric-value" style="font-size: var(--font-size-xl);">${m.value}</div>
+                </div>
+            `).join('');
+
+            const kpiHTML = data.kpi ? `
+                <div class="highlight-box">
+                    <h3>Business KPIs</h3>
+                    <p>${data.kpi}</p>
+                </div>
+            ` : '';
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <h3 class="section-heading">Primary Metrics</h3>
+                    <div class="metrics-grid">${metricCards}</div>
+                </div>
+                ${kpiHTML}
+            `;
+        }
+
+        function renderImpactSlide(data) {
+            const impactsList = data.impacts.map(i => `<li>${i}</li>`).join('');
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <ul class="list-items">${impactsList}</ul>
+                </div>
+            `;
+        }
+
+        function renderBusinessSlide(data) {
+            const impactCards = data.impacts.map(imp => `
+                <div class="impact-item">
+                    <div class="impact-label">${imp.label}</div>
+                    <div class="impact-value">${imp.value}</div>
+                </div>
+            `).join('');
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <div class="impact-grid">${impactCards}</div>
+                </div>
+            `;
+        }
+
+        function renderVisionSlide(data) {
+            const visionList = data.vision.map(v => `<li>${v}</li>`).join('');
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <ul class="list-items">${visionList}</ul>
+                </div>
+                <div class="highlight-box">
+                    <h3>Transformation Summary</h3>
+                    <p>${data.summary}</p>
+                </div>
+            `;
+        }
+
+        function renderDigitalSlide(data) {
+            const itemsList = data.items.map(i => `<li>${i}</li>`).join('');
+            const imageHTML = data.image ? `
+                <figure class="slide-image">
+                    <img src="${data.image}" alt="${data.imageCaption || 'Digital enablement'}">
+                    <figcaption>${data.imageCaption || ''}</figcaption>
+                </figure>
+            ` : '';
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <ul class="list-items">${itemsList}</ul>
+                </div>
+                ${imageHTML}
+            `;
+        }
+
+        function renderKaizenSlide(data) {
+            const itemsList = data.items.map(i => `<li>${i}</li>`).join('');
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="content-section">
+                    <ul class="list-items">${itemsList}</ul>
+                </div>
+            `;
+        }
+
+        function renderKastzalanSlide(data) {
+            const contentHTML = data.content.map(line => {
+                if (line === '') {
+                    return '<br>';
+                }
+                return `<p style="margin-bottom: 0.75rem;">${line}</p>`;
+            }).join('');
+
+            return `
+                <h1 class="slide-title">${data.title}</h1>
+                <div class="highlight-box" style="margin-top: 1.5rem;">
+                    ${contentHTML}
+                </div>
+                <div class="content-section" style="margin-top: 2rem;">
+                    <div class="highlight-box" style="background: var(--color-bg-3); border-color: var(--carlsberg-green);">
+                        <h3 style="color: var(--carlsberg-green);">Strategic Context</h3>
+                        <p>Kastzalan 2025 provides a realistic, proven benchmark. Our 2026 targets are aggressive but achievable, establishing the foundation for matching and eventually exceeding Kastzalan excellence levels.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        function updateNavigation() {
+            const dept = departments[currentDepartment];
+            const totalSlides = dept.slides.length;
+            
+            slideCounter.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+            
+            prevButton.disabled = currentSlide === 0;
+            nextButton.disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Initialize the app
+        renderSlides();
+        updateNavigation();
+    </script>
+</body>
+</html>
